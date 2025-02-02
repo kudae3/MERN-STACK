@@ -6,6 +6,7 @@ const RecipeController = {
         const recipes = await Recipe.find().sort({createdAt: -1});
         return res.json(recipes);
     },
+
     store: async(req, res) => {
         let {title, description, ingredients} = req.body;        
         const recipe = await Recipe.create({
@@ -13,6 +14,7 @@ const RecipeController = {
         })
         return res.json({message: recipe});
     },
+
     show: async (req, res) => {
         try {
             const id = req.params.id;
@@ -28,18 +30,36 @@ const RecipeController = {
             return res.status(500).json({message: 'Internal Server Error'});
         }
     },
-    update: (req, res) => {
-        const id = req.params.id;
-        const {title, description, ingredients} = req.body;
-        return res.json({message: 'Update a recipe'});
+
+    update: async(req, res) => {
+        try {
+            const id = req.params.id;
+            if(!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({message: 'Invalid ID'});
+            }
+            const recipe = await Recipe.findByIdAndUpdate(id, {...req.body});
+            if(!recipe) {
+                return res.status(404).json({message: 'Recipe not found'});
+            }
+            return res.status(200).json(recipe);
+        } catch (error) {
+            return res.status(500).json({message: 'Internal Server Error'});
+        }
     },
+
     destroy: async(req, res) => {
         try {
             const id = req.params.id;
-            await Recipe.findByIdAndDelete(id);
-            return res.json({message: 'Successfully Deleted'});
+            if(!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({message: 'Invalid ID'});
+            }
+            const recipe = await Recipe.findByIdAndDelete(id);
+            if(!recipe) {
+                return res.status(404).json({message: 'Recipe not found'});
+            }
+            return res.status(200).json(recipe);
         } catch (error) {
-            return res.status(404).json({message: 'Something went wrong!'});
+            return res.status(500).json({message: 'Internal Server Error'});
         }
     }
 
