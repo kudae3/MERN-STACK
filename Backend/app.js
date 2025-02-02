@@ -2,12 +2,16 @@ import express from 'express';
 import 'dotenv/config'
 import morgan from 'morgan';
 import RecipeRoutes from './routes/Recipes.js';
+import mongoose from 'mongoose';
 
 const app = express();
+mongoose.connect(process.env.MONGO_URI).then(()=>{
+    console.log('Connected to MongoDB');
+    app.listen(process.env.PORT, ()=>{
+        console.log('Server is running on port: ' + process.env.PORT); 
+    })
+})
+
 app.use(morgan('dev'));
 
 app.use('/api/recipes',RecipeRoutes);
-
-app.listen(process.env.PORT, ()=>{
-    console.log('Server is running on port: ' + process.env.PORT); 
-})
