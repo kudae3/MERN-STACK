@@ -3,7 +3,10 @@ import RecipeController from '../controllers/RecipeController.js';
 
 const router = express.Router();
 
-// Get all recipes
-router.get('/', RecipeController.index);
+router.get('', RecipeController.index);
+router.post('', RecipeController.create);
+router.get('/:id', RecipeController.show);
+router.patch('/:id', RecipeController.update);
+router.delete('/:id', RecipeController.delete);
 
 export default router;
