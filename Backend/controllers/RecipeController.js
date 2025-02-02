@@ -1,4 +1,5 @@
 import Recipe from "../models/Recipe.js";
+import mongoose from 'mongoose';
 
 const RecipeController = {
     index: async (req, res) => {
@@ -14,10 +15,17 @@ const RecipeController = {
     },
     show: async (req, res) => {
         try {
-            const recipe = await Recipe.findById(req.params.id);
+            const id = req.params.id;
+            if(!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({message: 'Invalid ID'});
+            }
+            const recipe = await Recipe.findById(id);
+            if(!recipe) {
+                return res.status(404).json({message: 'Recipe not found'});
+            }
             return res.status(200).json(recipe);
         } catch (error) {
-            return res.status(404).json({message: 'Recipe not found'});
+            return res.status(500).json({message: 'Internal Server Error'});
         }
     },
     update: (req, res) => {
