@@ -11,7 +11,7 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
         console.log('Server is running on port: ' + process.env.PORT); 
     })
 })
-
+app.use(express.json());
 app.use(morgan('dev'));
 
 app.use('/api/recipes',RecipeRoutes);
