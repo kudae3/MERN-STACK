@@ -1,8 +1,18 @@
+import { NavLink, Outlet } from "react-router"
+
 function App() {
   return (
-    <div>
-        <h2 className="font-bold text-md text-red-700">Hello World</h2>
-    </div>
+    <>
+      <nav>
+        <ul>
+          <li><NavLink to="/">Home</NavLink></li>
+          <li><NavLink to="/about">About</NavLink></li>
+        </ul>
+        <div>
+          <Outlet/>
+        </div>
+      </nav>
+    </>
   )
 }
 
