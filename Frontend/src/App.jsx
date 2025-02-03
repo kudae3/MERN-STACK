@@ -1,17 +1,14 @@
-import { NavLink, Outlet } from "react-router"
+import { Outlet } from "react-router"
+import Nav from "./components/Nav"
 
 function App() {
   return (
     <>
-      <nav>
-        <ul>
-          <li><NavLink to="/">Home</NavLink></li>
-          <li><NavLink to="/about">About</NavLink></li>
-        </ul>
-        <div>
-          <Outlet/>
-        </div>
-      </nav>
+      <Nav/>
+      <div className="p-4 bg-gray-300 h-screen">
+        <Outlet/>
+      </div>
+        
     </>
   )
 }
