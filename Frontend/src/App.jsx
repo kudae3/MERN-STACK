@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <Nav/>
-      <div className="p-4 bg-gray-300 h-screen">
+      <div className="p-5 mb-10 bg-[#fdfdfd]">
         <Outlet/>
       </div>
         
