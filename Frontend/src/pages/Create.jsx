@@ -1,75 +1,92 @@
 import { useState } from "react";
+import api from "../../axios.config";
+import { useNavigate } from "react-router";
 
 function Create() {
+
+    let navigate = useNavigate();
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [ingredient, setIngredient] = useState('');
     const [ingredients, setIngredients] = useState([]);
-
-    const [titleError, setTitleError] = useState(false);
-    const [descriptionError, setDescriptionError] = useState(false)
-    const [ingredientError, setIngredientError] = useState(false)
-    const [invalideInput, setInvalidInput] = useState(false);
+    
+    const [invalidInput, setInvalidInput] = useState(false);
+    const [duplicateError, setDuplicateError] = useState(false);
+    
+    const [titleError, setTitleError] = useState('');
+    const [descriptionError, setDescriptionError] = useState('');
+    const [ingredientsError, setIngredientsError] = useState('');
 
     const handleEnter = (e) => {
         if (e.key === "Enter"){
-
+            e.preventDefault();
             if(!ingredient.trim()){
                 setInvalidInput(true)
-            }else{
+            }
+            else if(ingredients.includes(ingredient)){
+                setDuplicateError(true)
+            }
+            else{
                 setIngredients([...ingredients, ingredient])
                 setIngredient('')
-                setIngredientError(false)
             }
         }
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        !title.trim() ? setTitleError(true) : '',
-        !description.trim() ? setDescriptionError(true) : '',
-        !ingredients.length ? setIngredientError(true) : ''
+    const handleSubmit = async(e) => {
+        try {
+            e.preventDefault();
+            let recipe = {title, description, ingredients}
+            await api.post('/recipes', recipe)
+            navigate('/');
+        } catch (e) {            
+            const errors = e.response?.data?.errors || {}; 
+            setTitleError(errors.title?.msg || '');
+            setDescriptionError(errors.description?.msg || '');
+            setIngredientsError(errors.ingredients?.msg || '');              
+        }
     }
 
     return (
         <div className="container mx-auto p-4 md:px-32 lg:px-64">
-        <form className="space-y-7" onClick={handleSubmit}>
+        <form className="space-y-7" onSubmit={(e)=>handleSubmit(e)}>
             
             <div>
-            <label className="block text-sm font-medium text-gray-700">Title</label>
-            <input 
-                value={title}
-                onChange={(e)=>{
-                    setTitleError(false)
-                    setTitle(e.target.value)
-                }}
-                type="text" 
-                className="mt-1 block w-full border rounded-md shadow-sm p-2 focus-within:outline-[0.5px] focus-within:outline-teal-400" 
-            />
+                <label className="block text-sm font-medium text-gray-700">Title</label>
+                <input 
+                    value={title}
+                    onChange={(e)=>{
+                        setTitleError('')
+                        setTitle(e.target.value)
+                    }}
+                    type="text" 
+                    className="mt-1 block w-full border rounded-md shadow-sm p-2 focus-within:outline-[0.5px] focus-within:outline-teal-400" 
+                />
             <div>
                 {
-                    titleError && 
-                    <span className="text-red-600 text-xs font-semibold">Title Field Is Required!</span>
+                    titleError &&
+                    <p className="text-red-600 text-xs font-semibold">{titleError}</p>
                 }
             </div>
             </div>
             
             <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
-            <textarea 
-                value={description}
-                onChange={(e) => {
-                    setDescriptionError(false)
-                    setDescription(e.target.value)
-                }}
-                className="mt-1 block w-full border rounded-md shadow-sm p-2 focus-within:outline-[0.5px] focus-within:outline-teal-400"></textarea>
-            <div>
-                {
-                    descriptionError && 
-                    <span className="text-red-600 text-xs font-semibold">Description Field Is Required!</span>
-                }
-            </div>
+                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <textarea 
+                    value={description}
+                    onChange={(e) => {
+                        setDescriptionError('')
+                        setDescription(e.target.value)
+                    }}
+                    className="mt-1 block w-full border rounded-md shadow-sm p-2 focus-within:outline-[0.5px] focus-within:outline-teal-400">
+                </textarea>
+                <div>
+                    {
+                        descriptionError &&
+                        <p className="text-red-600 text-xs font-semibold">{descriptionError}</p>
+                    }
+                </div>
             </div>
             
             <div>
@@ -77,8 +94,9 @@ function Create() {
                 <input 
                     value={ingredient}
                     onChange={(e) => {
-                        setIngredientError(false)
                         setInvalidInput(false)
+                        setDuplicateError(false)
+                        setIngredientsError('')
                         setIngredient(e.target.value)
                     }}
                     onKeyDown={(e) => handleEnter(e)}                        
@@ -88,12 +106,20 @@ function Create() {
 
                 <div>
                     {
-                        invalideInput &&
-                        <p className="text-red-600 text-xs font-semibold">Invalid Input</p>
+                        invalidInput &&
+                        <p className="text-red-600 text-xs font-semibold">Invalid Input!</p>
                     }
+                </div>
+                <div>
                     {
-                        ingredientError && 
-                        <p className="text-red-600 text-xs font-semibold">Ingredient Is Required!</p>
+                        duplicateError &&
+                        <p className="text-red-600 text-xs font-semibold">Ingredients cannot be duplicated!</p>
+                    }
+                </div>
+                <div>
+                    {
+                        ingredientsError &&
+                        <p className="text-red-600 text-xs font-semibold">{ingredientsError}</p>
                     }
                 </div>
                 
@@ -109,9 +135,9 @@ function Create() {
             </div>
 
             <div>
-            <button type="submit" className="bg-green-500 hover:bg-green-600 duration-300 text-white px-4 py-2 rounded-md">
-                Submit
-            </button>
+                <button type="submit" className="bg-green-500 hover:bg-green-600 duration-300 text-white px-4 py-2 rounded-md">
+                    Submit
+                </button>
             </div>
         
         </form>
