@@ -3,8 +3,15 @@ import mongoose from 'mongoose';
 
 const RecipeController = {
     index: async (req, res) => {
-        const recipes = await Recipe.find().sort({createdAt: -1});
-        return res.json(recipes);
+        const limit = 5;
+        const page = req.query.page || 1;        
+        const recipes = await Recipe
+                        .find()
+                        .skip((page - 1) * limit)
+                        .limit(limit)
+                        .sort({createdAt: -1});
+        const totalPages = Math.ceil(await Recipe.countDocuments() / limit);
+        return res.json({recipes, totalPages});
     },
 
     store: async(req, res) => {
