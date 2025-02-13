@@ -38,7 +38,7 @@ function Pagination({currentPage, totalPages}) {
                         <li key={page}>
                             <Link
                                 to={`?page=${page}`}
-                                className={`block size-8 rounded-sm border border-gray-100 bg-white text-center leading-8 ${currentPage == page ? 'border-blue-600 bg-blue-600 text-white' : ''}`}
+                                className={`block size-8 rounded-sm border text-center leading-8 ${currentPage == page ? 'border-blue-600 bg-blue-600 text-white' : 'border-gray-100 bg-white text-gray-900'}`}
                             >
                                 {page}
                             </Link>
