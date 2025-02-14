@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../axios.config";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 function Create() {
 
     let navigate = useNavigate();
-
+    let {id} = useParams();
+    
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [ingredient, setIngredient] = useState('');
@@ -17,6 +18,18 @@ function Create() {
     const [titleError, setTitleError] = useState('');
     const [descriptionError, setDescriptionError] = useState('');
     const [ingredientsError, setIngredientsError] = useState('');
+
+    useEffect(() => {
+        if(id){
+            let fetchRecipe = async() => {
+                let res = await api.get('/recipes/'+id);
+                setTitle(res.data.title);
+                setDescription(res.data.description);
+                setIngredients(res.data.ingredients);
+            }
+            fetchRecipe();
+        }
+    }, [id])
 
     const handleEnter = (e) => {
         if (e.key === "Enter"){
@@ -38,7 +51,12 @@ function Create() {
         try {
             e.preventDefault();
             let recipe = {title, description, ingredients}
-            await api.post('/recipes', recipe)
+            if(id){
+                await api.patch('/recipes/'+id, recipe)
+            }
+            else{
+                await api.post('/recipes', recipe)
+            }
             navigate('/');
         } catch (e) {            
             const errors = e.response?.data?.errors || {}; 
@@ -136,7 +154,7 @@ function Create() {
 
             <div>
                 <button type="submit" className="bg-green-500 hover:bg-green-600 duration-300 text-white px-4 py-2 rounded-md">
-                    Submit
+                    {id ? 'Update' : 'Create'}
                 </button>
             </div>
         

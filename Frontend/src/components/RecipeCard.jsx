@@ -1,3 +1,5 @@
+import { Link } from "react-router"
+
 function RecipeCard({recipe, deleteRecipe}) {
     
   return (
@@ -16,7 +18,8 @@ function RecipeCard({recipe, deleteRecipe}) {
           </div>
           <p className="text-gray-700">Published at - 30.11.2026</p>
         </div>
-        <div>
+        <div className="space-x-3">
+          <Link to={`/edit/${recipe._id}`} className="bg-orange-500 text-white px-2 py-1 rounded-lg hover:bg-orange-600 duration-300">Edit</Link>
           <button onClick={()=>deleteRecipe(recipe._id)} className="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 duration-300">Delete</button>
         </div>
     </div>

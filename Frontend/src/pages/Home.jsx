@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react"
 import RecipeCard from "../components/RecipeCard";
 import api from "../../axios.config.js";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import Pagination from "../components/Pagination.jsx";
 
 function Home() {
 
   let [recipes, setRecipes] = useState([]);
   let [totalPages, setTotalPages] = useState(1);
-  let location = useLocation();
-  let currentPage = new URLSearchParams(location.search).get('page') || 1;
+  
+  // let location = useLocation();
+  // let currentPage = new URLSearchParams(location.search).get('page') || 1;
+  
+  let [searchParams] = useSearchParams();
+  let currentPage = searchParams.get('page') || 1;
+  
   let navigate = useNavigate();
 
   useEffect(() => {
