@@ -17,16 +17,16 @@ function Nav() {
         </li>
         <li>
           <NavLink 
-            to="/about" 
+            to="/create" 
             className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
-            About
+            Create
           </NavLink>
         </li>
         <li>
           <NavLink 
-            to="/create" 
+            to="/signup" 
             className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
-            Create
+            Sign up
           </NavLink>
         </li>
       </ul>
