@@ -4,7 +4,8 @@ import morgan from 'morgan';
 import RecipeRoutes from './routes/Recipes.js';
 import UserRoutes from './routes/Users.js';
 import mongoose from 'mongoose';
-import cors from 'cors';   
+import cors from 'cors';
+import cookieParser from 'cookie-parser'; 
 
 const app = express();
 mongoose.connect(process.env.MONGO_URI).then(()=>{
@@ -16,6 +17,7 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cookieParser());
 
 app.use('/api/recipes',RecipeRoutes);
 app.use('/api/users', UserRoutes);
