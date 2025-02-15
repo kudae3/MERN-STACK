@@ -63,7 +63,7 @@ function Create() {
 
     return (
         <div className="border border-gray-200 p-8 rounded-md shadow-md container mx-auto max-w-md">
-            <h2 className="text-teal-500 font-bold text-center text-2xl mb-7">{id ? 'Edit the' : 'Create a new'} Recipefy</h2>
+            <h2 className="text-teal-500 font-bold text-center text-2xl mb-7">{id ? 'Edit the' : 'Create a new'} Recipe</h2>
             <form className="space-y-7" onSubmit={(e)=>handleSubmit(e)}>
                 
                 <div>

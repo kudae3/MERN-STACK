@@ -12,9 +12,23 @@ const alreadyExists = async (value) => {
     return true;
 };
 
+const notExists = async (value) => {
+    const user = await User.findOne({ email: value });
+    if (!user) {
+        throw new Error('Email not found');
+    }
+    return true;
+}
+
 const router = express.Router();
 
-router.post('/login', UserController.login);
+router.post('/login', [
+    body('email')
+        .notEmpty().withMessage('Email is required')
+        .custom(notExists),
+    body('password')
+        .notEmpty().withMessage('Password is required')
+], ValidationErrorMessage, UserController.login);
 
 router.post('/register', [
     body('name').notEmpty().withMessage('Name is required'),

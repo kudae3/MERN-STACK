@@ -17,8 +17,26 @@ const UserController = {
         }     
     },
     
-    login : (req, res) => {
-        return res.json({message: 'Login Api'});
+    login : async (req, res) => {
+        try {
+            let {email, password} = req.body;
+            const user = await User.login(email, password);
+            
+            const token = generateJWT(user._id);
+            res.cookie('jwt', token, {httpOnly: true, maxAge: 1000*60*60*24*365});
+
+            return res.status(200).json({message: 'User Login successfully', user, token});
+        } 
+        catch (error) {
+            if (error.message === 'Incorrect Password') {
+                return res.status(400).json({
+                  errors: { password: { msg: error.message } }
+                });
+              }
+            else{
+                return res.status(400).json({message: error.message});
+            }
+        }
     }
 }
 

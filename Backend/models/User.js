@@ -30,5 +30,16 @@ userSchema.statics.register = async function(name, email, password){
     return user;
 }
 
+userSchema.statics.login = async function(email, password){
+    const user = await this.findOne({email});
+    const isCorrect = await bcrypt.compare(password, user.password)
+    if(isCorrect){
+        return user;
+    }
+    else{
+        throw new Error('Incorrect Password');
+    }
+}
+
 const User = mongoose.model('User', userSchema);
 export default User;

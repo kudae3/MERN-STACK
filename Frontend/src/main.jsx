@@ -5,6 +5,7 @@ import App from './App';
 import Home from './pages/Home.jsx'
 import Create from './pages/Create.jsx';
 import SignUp from './pages/SignUp.jsx';
+import Login from './pages/Login.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/create' element={<Create/>}></Route>
           <Route path='/edit/:id' element={<Create/>}></Route>
           <Route path='/signup' element={<SignUp/>}></Route>
+          <Route path='/login' element={<Login/>}></Route>
       </Route>
     </Routes>
   </BrowserRouter>,

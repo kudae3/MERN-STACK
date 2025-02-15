@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../../axios.config";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 function SignUp() {
 
@@ -141,9 +141,9 @@ function SignUp() {
           Create an account
         </button>
 
-        <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-          Already have an account?
-          <a href="#" className="text-gray-700 underline">Log in</a>.
+        <p className="mt-4 text-sm text-gray-500 sm:mt-0 space-x-2">
+          <span>Already have an account?</span>
+          <Link to="/login" className="text-gray-700 underline">Log in</Link>.
         </p>
       
       </div>

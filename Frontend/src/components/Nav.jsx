@@ -29,6 +29,13 @@ function Nav() {
             Sign up
           </NavLink>
         </li>
+        <li>
+          <NavLink 
+            to="/login" 
+            className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
+            Login
+          </NavLink>
+        </li>
       </ul>
     </nav>
   </div>
