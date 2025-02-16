@@ -23,7 +23,7 @@ const UserController = {
             const user = await User.login(email, password);
             
             const token = generateJWT(user._id);
-            res.cookie('jwt', token, {httpOnly: true, maxAge: 1000*60*60*24*365});
+            res.cookie('jwt', token, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000});
 
             return res.status(200).json({message: 'User Login successfully', user, token});
         } 

@@ -6,6 +6,7 @@ import UserRoutes from './routes/Users.js';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'; 
+import AuthMiddleware from './middlewares/AuthMiddleware.js';
 
 const app = express();
 mongoose.connect(process.env.MONGO_URI).then(()=>{
@@ -22,5 +23,5 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cookieParser());
 
-app.use('/api/recipes',RecipeRoutes);
+app.use('/api/recipes', AuthMiddleware, RecipeRoutes);
 app.use('/api/users', UserRoutes);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import RecipeCard from "../components/RecipeCard";
 import api from "../../axios.config.js";
-import { useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import Pagination from "../components/Pagination.jsx";
 
 function Home() {
@@ -14,14 +14,19 @@ function Home() {
   
   let [searchParams] = useSearchParams();
   let currentPage = searchParams.get('page') || 1;
+  let [errors, setErrors] = useState();
   
   let navigate = useNavigate();
 
   useEffect(() => {
     let fetchRecipes = async() => {
-      let res = await api.get('/recipes?page='+currentPage);      
-      setRecipes(res.data.recipes);
-      setTotalPages(res.data.totalPages);
+      try {
+        let res = await api.get('/recipes?page='+currentPage);      
+        setRecipes(res.data.recipes);
+        setTotalPages(res.data.totalPages);
+      } catch (e) { 
+        setErrors(e.response);
+      }
     }
     fetchRecipes();
   }, [currentPage])
@@ -41,13 +46,16 @@ function Home() {
   return (
     <>
         <div className="md:max-w-2xl lg:max-w-4xl mx-auto space-y-3">
+          {errors && errors.status == 400 && <p className="text-red-500 text-center font-semibold py-4">You need to <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> first to view this page</p>}
+          {errors && errors.status == 401 && <p className="text-red-500 text-center font-semibold py-4">Your credentials do not match our records. Please <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> again</p>}
+          {errors && errors.status == 404 && <p className="text-red-500 text-center font-semibold py-4">Something Went Wrong! Please <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> again</p>}          
           {
             recipes && recipes.map((recipe)=>(
               <RecipeCard key={recipe._id} recipe={recipe} deleteRecipe={deleteRecipe}/>
             ))
           }
         </div>
-        <Pagination currentPage={currentPage} totalPages={totalPages}/>
+        {!errors && <Pagination currentPage={currentPage} totalPages={totalPages}/>}
     </>
   )
 }
