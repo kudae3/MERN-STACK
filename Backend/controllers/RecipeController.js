@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const RecipeController = {
     index: async (req, res) => {
-        const limit = 5;
+        const limit = 6;
         const page = req.query.page || 1;        
         const recipes = await Recipe
                         .find()
