@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault();
     try {
         let data = {email, password};
-        await api.post('/users/login', data)
+        await api.post('/users/login', data, {withCredentials: true});
         navigate('/');
     } catch (e) {
         setErrors(e.response.data.errors)                

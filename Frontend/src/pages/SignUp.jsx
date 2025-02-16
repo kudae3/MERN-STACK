@@ -25,7 +25,7 @@ function SignUp() {
         return;
       }
       let data = {name: username, email, password}
-      await api.post('/users/register', data);
+      await api.post('/users/register', data, {withCredentials: true});
       navigate('/');
       
     } catch(e){

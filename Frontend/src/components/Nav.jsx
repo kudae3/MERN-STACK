@@ -1,6 +1,18 @@
 import { NavLink } from "react-router"
+import { useContext } from "react"
+import { AuthContext } from "../contexts/AuthContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 function Nav() {
+  
+  let user = useContext(AuthContext);
+  console.log(user.name);
+
+  let theme = useContext(ThemeContext);
+  console.log(theme.theme);
+  
+  
+  
   return (
     <div className="bg-gray-700">
     <nav className="flex justify-between items-center p-5 text-white md:max-w-xl lg:max-w-5xl mx-auto">
