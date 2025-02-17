@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../../axios.config";
 import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../contexts/AuthContext";
 
 function SignUp() {
 
@@ -14,6 +15,7 @@ function SignUp() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [errors, setErrors] = useState([]);
+  const {dispatch} = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -25,7 +27,8 @@ function SignUp() {
         return;
       }
       let data = {name: username, email, password}
-      await api.post('/users/register', data);
+      let user = await api.post('/users/register', data);
+      dispatch({type: "LOGIN", payload: user.data});
       navigate('/');
       
     } catch(e){

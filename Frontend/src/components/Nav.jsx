@@ -1,16 +1,11 @@
 import { NavLink, useNavigate } from "react-router"
 import { useContext } from "react"
 import { AuthContext } from "../contexts/AuthContext";
-import { ThemeContext } from "../contexts/ThemeContext";
 import api from "../../axios.config";
 
 function Nav() {
   
-  let user = useContext(AuthContext);
-  console.log(user.name);
-
-  let theme = useContext(ThemeContext);
-  console.log(theme.theme);
+  let {user, dispatch} = useContext(AuthContext);
 
   let navigate = useNavigate();
   
@@ -18,6 +13,7 @@ function Nav() {
     try {
       await api.post('/users/logout');
       navigate('/login');
+      dispatch({type: "LOGOUT", payload: null});
     } catch (error) {
       console.log(error);
     }
@@ -44,28 +40,43 @@ function Nav() {
             Create
           </NavLink>
         </li>
-        <li>
-          <NavLink 
-            to="/signup" 
-            className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
-            Sign up
-          </NavLink>
-        </li>
-        <li>
-          <NavLink 
-            to="/login" 
-            className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
-            Login
-          </NavLink>
-        </li>
-        <li>
-          <NavLink 
-            type="button"
-            onClick={logout}
-            className='text-teal-400 font-semibold' >
-            Logout
-          </NavLink>
-        </li>
+        {
+          !user && (
+            <>
+              <li>
+                <NavLink 
+                  to="/signup" 
+                  className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
+                  Sign up
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/login" 
+                  className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
+                  Login
+                </NavLink>
+              </li>
+            </>
+          )
+          
+        }
+        {
+          user && (
+            <>
+              <li>
+                <NavLink 
+                  to="/profile" 
+                  className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
+                  {user && user.user.name}
+                </NavLink>
+              </li>
+              <li>
+                <button onClick={logout} className="text-teal-400 font-semibold">Logout</button>
+              </li>
+            </>
+          )
+        }
       </ul>
     </nav>
   </div>

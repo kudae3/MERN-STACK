@@ -7,13 +7,9 @@ import Create from './pages/Create.jsx';
 import SignUp from './pages/SignUp.jsx';
 import Login from './pages/Login.jsx';
 import {AuthProvider} from './contexts/AuthContext.jsx';
-import { ThemeProvider } from './contexts/ThemeContext.jsx';
-
-
 
 createRoot(document.getElementById('root')).render(
 <AuthProvider>
-  <ThemeProvider>
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<App />}>
@@ -25,6 +21,5 @@ createRoot(document.getElementById('root')).render(
           </Route>
       </Routes>
     </BrowserRouter>
-  </ThemeProvider>
 </AuthProvider>
 )
