@@ -33,13 +33,6 @@ function Nav() {
             Home
           </NavLink>
         </li>
-        <li>
-          <NavLink 
-            to="/create" 
-            className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
-            Create
-          </NavLink>
-        </li>
         {
           !user && (
             <>
@@ -64,6 +57,13 @@ function Nav() {
         {
           user && (
             <>
+              <li>
+                <NavLink 
+                  to="/create" 
+                  className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
+                  Create
+                </NavLink>
+              </li>
               <li>
                 <NavLink 
                   to="/profile" 
