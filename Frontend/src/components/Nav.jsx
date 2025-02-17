@@ -1,7 +1,8 @@
-import { NavLink } from "react-router"
+import { NavLink, useNavigate } from "react-router"
 import { useContext } from "react"
 import { AuthContext } from "../contexts/AuthContext";
 import { ThemeContext } from "../contexts/ThemeContext";
+import api from "../../axios.config";
 
 function Nav() {
   
@@ -10,8 +11,17 @@ function Nav() {
 
   let theme = useContext(ThemeContext);
   console.log(theme.theme);
+
+  let navigate = useNavigate();
   
-  
+  const logout = async() => {
+    try {
+      await api.post('/users/logout');
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   return (
     <div className="bg-gray-700">
@@ -46,6 +56,14 @@ function Nav() {
             to="/login" 
             className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
             Login
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            type="button"
+            onClick={logout}
+            className='text-teal-400 font-semibold' >
+            Logout
           </NavLink>
         </li>
       </ul>

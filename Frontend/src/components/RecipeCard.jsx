@@ -30,9 +30,10 @@ function RecipeCard({ recipe, deleteRecipe }) {
         </div>
         
           <div className="space-x-2 text-right">
+            
             <Link
               to={`/edit/${recipe._id}`}
-              className="group relative inline-flex items-center overflow-hidden rounded-sm border border-current px-2 py-1 text-indigo-600 focus:ring-3 focus:outline-hidden"
+              className="group relative inline-flex items-center overflow-hidden rounded-lg border border-current px-2 py-1 text-indigo-600 focus:ring-3 focus:outline-hidden"
             >
               <span className="absolute -end-full transition-all group-hover:end-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3">
@@ -43,9 +44,10 @@ function RecipeCard({ recipe, deleteRecipe }) {
                 Edit
               </span>
             </Link>
+            
             <Link
               onClick={()=>deleteRecipe(recipe._id)}
-              className="group relative inline-flex items-center overflow-hidden rounded-sm border border-current px-2 py-1 text-red-600 focus:ring-3 focus:outline-hidden"
+              className="group relative inline-flex items-center overflow-hidden rounded-lg border border-current px-2 py-1 text-red-600 focus:ring-3 focus:outline-hidden"
             >
               <span className="absolute -end-full transition-all group-hover:end-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-3">
@@ -56,6 +58,7 @@ function RecipeCard({ recipe, deleteRecipe }) {
                 Delete
               </span>
             </Link>
+          
           </div>
        
       </div>

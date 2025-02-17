@@ -46,9 +46,9 @@ function Home() {
   return (
     <>
         <div className="md:max-w-2xl lg:max-w-4xl mx-auto md:grid-cols-2 lg:grid-cols-3 grid gap-4">
-          {errors && errors.status == 400 && <p className="text-red-500 text-center font-semibold py-4">You need to <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> first to view this page</p>}
-          {errors && errors.status == 401 && <p className="text-red-500 text-center font-semibold py-4">Your credentials do not match our records. Please <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> again</p>}
-          {errors && errors.status == 404 && <p className="text-red-500 text-center font-semibold py-4">Something Went Wrong! Please <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> again</p>}          
+          {errors && errors.status == 400 && <p className="text-red-500 text-center font-semibold py-4 col-span-3">You need to <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> first to view this page</p>}
+          {errors && errors.status == 401 && <p className="text-red-500 text-center font-semibold py-4 col-span-3">Your credentials do not match our records. Please <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> again</p>}
+          {errors && errors.status == 404 && <p className="text-red-500 text-center font-semibold py-4 col-span-3">Something Went Wrong! Please <Link className="underline hover:text-orange-600 duration-300" to="/login">log in</Link> again</p>}          
           {
             recipes && recipes.map((recipe)=>(
               <RecipeCard key={recipe._id} recipe={recipe} deleteRecipe={deleteRecipe}/>

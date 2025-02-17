@@ -40,4 +40,6 @@ router.post('/register', [
         .isLength({min: 6}).withMessage('Password should be at least 6 characters long')
 ], ValidationErrorMessage, UserController.register);
 
+router.post('/logout', UserController.logout);
+
 export default router;
