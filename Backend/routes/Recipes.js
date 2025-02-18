@@ -2,6 +2,7 @@ import express from 'express';
 import RecipeController from '../controllers/RecipeController.js';
 import { body } from 'express-validator';
 import ValidationErrorMessage from '../middlewares/handleErrorMessage.js';
+import upload from '../functions/upload.js';
 
 const router = express.Router();
 
@@ -29,5 +30,6 @@ router.post('', [
 router.get('/:id', RecipeController.show);
 router.patch('/:id', RecipeController.update);
 router.delete('/:id', RecipeController.destroy);
+router.post('/:id/upload', upload.single('photo'), RecipeController.upload);
 
 export default router;

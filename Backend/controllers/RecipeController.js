@@ -68,6 +68,15 @@ const RecipeController = {
         } catch (error) {
             return res.status(500).json({message: 'Internal Server Error'});
         }
+    },
+
+    upload: async(req, res) =>{
+        try {
+            return res.status(200).json({message: 'Image uploaded'});
+            
+        } catch (error) {
+            return res.status(500).json({message: 'Internal Server Error'});
+        }
     }
 
 };
