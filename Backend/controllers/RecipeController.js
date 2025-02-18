@@ -19,7 +19,8 @@ const RecipeController = {
         const recipe = await Recipe.create({
             title, description, ingredients
         })
-        return res.json({message: recipe});
+        return res.status(200).json(recipe);
+
     },
 
     show: async (req, res) => {

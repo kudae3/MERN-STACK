@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../axios.config";
 import { useNavigate, useParams } from "react-router";
+import DropZone from "../components/DropZone";
 
 function Create() {
 
@@ -16,6 +17,8 @@ function Create() {
     const [duplicateError, setDuplicateError] = useState(false);
     
     const [errors, setErrors] = useState([]);
+
+    const [file, setFile] = useState([]);
 
     useEffect(() => {
         if(id){
@@ -48,15 +51,32 @@ function Create() {
     const handleSubmit = async(e) => {
         try {
             e.preventDefault();
+
             let recipe = {title, description, ingredients}
+            
+            let recipeId;
+            let res
             if(id){
-                await api.patch('/recipes/'+id, recipe)
+                res = await api.patch('/recipes/'+id, recipe)                
             }
             else{
-                await api.post('/recipes', recipe)
+                res = await api.post('/recipes', recipe)
             }
+            recipeId = res.data._id;
+            
+
+            //file
+            let formData = new FormData;
+            formData.set('photo', file[0]);
+
+            await api.post(`/recipes/${recipeId}/upload`, formData, {
+                headers: {
+                    Accept: 'multipart/form-data'
+                }
+            })
+
             navigate('/');
-        } catch (e) {            
+        } catch (e) {           
             setErrors(e.response.data.errors);             
         }
     }
@@ -78,10 +98,14 @@ function Create() {
                     />
                 <div>
                     {
-                        errors.title &&
+                        errors && errors.title &&
                         <p className="text-red-600 text-xs font-semibold">{errors.title.msg}</p>
                     }
                 </div>
+                </div>
+
+                <div>
+                    <DropZone onFileChange={setFile} />
                 </div>
                 
                 <div>
@@ -95,7 +119,7 @@ function Create() {
                     </textarea>
                     <div>
                         {
-                            errors.description &&
+                            (errors && errors.description )&&
                             <p className="text-red-600 text-xs font-semibold">{errors.description.msg}</p>
                         }
                     </div>
@@ -129,7 +153,7 @@ function Create() {
                     </div>
                     <div>
                         {
-                            errors.ingredients &&
+                            errors && errors.ingredients &&
                             <p className="text-red-600 text-xs font-semibold">{errors.ingredients.msg}</p>
                         }
                     </div>
