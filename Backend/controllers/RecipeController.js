@@ -72,8 +72,15 @@ const RecipeController = {
 
     upload: async(req, res) =>{
         try {
-            return res.status(200).json({message: 'Image uploaded'});
-            
+            const id = req.params.id;
+            if(!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({message: 'Invalid ID'});
+            }            
+            const recipe = await Recipe.findByIdAndUpdate(id, {
+                photo: req.file.filename
+            });
+            return res.status(200).json(recipe);
+        
         } catch (error) {
             return res.status(500).json({message: 'Internal Server Error'});
         }

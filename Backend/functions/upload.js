@@ -1,6 +1,5 @@
 import multer from "multer"
 import { fileURLToPath } from "url";
-import path from 'path'; 
 import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +11,7 @@ const storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname)); 
+        cb(null, uniqueSuffix + file.originalname); 
       }
 })
   
