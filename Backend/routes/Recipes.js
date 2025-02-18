@@ -30,6 +30,29 @@ router.post('', [
 router.get('/:id', RecipeController.show);
 router.patch('/:id', RecipeController.update);
 router.delete('/:id', RecipeController.destroy);
-router.post('/:id/upload', upload.single('photo'), RecipeController.upload);
+
+router.post('/:id/upload', 
+    (req, res, next) => {
+      upload.single('photo')(req, res, (err) => {
+        if (err) {
+          req.fileError = err;
+        }
+        next();
+      });
+    },
+    [
+      body('photo').custom((value, { req }) => {
+        if (req.fileError) {
+          throw req.fileError; // Propagate multer error
+        }
+        if (!req.file) {
+          throw new Error('No file uploaded');
+        }
+        return true;
+      })
+    ],
+    ValidationErrorMessage, 
+    RecipeController.upload
+  );
 
 export default router;
