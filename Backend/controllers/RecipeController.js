@@ -1,5 +1,8 @@
 import Recipe from "../models/Recipe.js";
 import mongoose from 'mongoose';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import { promises as fs } from 'fs';
 
 const RecipeController = {
     index: async (req, res) => {
@@ -39,19 +42,46 @@ const RecipeController = {
         }
     },
 
-    update: async(req, res) => {
+    update: async (req, res) => {
         try {
+            const __filename = fileURLToPath(import.meta.url);
+            const __dirname = dirname(__filename);
             const id = req.params.id;
-            if(!mongoose.Types.ObjectId.isValid(id)) {
-                return res.status(400).json({message: 'Invalid ID'});
+    
+            // Validate ID
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ message: 'Invalid ID' });
             }
-            const recipe = await Recipe.findByIdAndUpdate(id, {...req.body});
-            if(!recipe) {
-                return res.status(404).json({message: 'Recipe not found'});
+    
+            // Find and update the recipe
+            const recipe = await Recipe.findByIdAndUpdate(id, { ...req.body }, { new: true });
+    
+            // Check if recipe exists
+            if (!recipe) {
+                return res.status(404).json({ message: 'Recipe not found' });
             }
+    
+            // If the recipe has a photo, attempt to delete the old file
+            if (recipe.photo) {
+                let path = __dirname+"/../public/"+recipe.photo
+                console.log(path);
+                
+                try {
+                    // Check if the file exists
+                    await fs.access(path);
+                    // If it exists, delete it
+                    await fs.unlink(path);
+                } catch (error) {
+                    // If the file doesn't exist or there's an error, log it (optional)
+                    console.error('Error deleting file:', error.message);
+                }
+            }
+    
+            // Return the updated recipe
             return res.status(200).json(recipe);
         } catch (error) {
-            return res.status(500).json({message: 'Internal Server Error'});
+            console.error('Error in update:', error);
+            return res.status(500).json({ message: 'Internal Server Error', error: error.message });
         }
     },
 
