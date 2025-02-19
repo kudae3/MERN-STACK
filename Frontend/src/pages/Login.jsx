@@ -17,7 +17,7 @@ function Login() {
     e.preventDefault();
     try {
         let data = {email, password};
-        let user = await api.post('/users/login', data);
+        let user = await api.post('api/users/login', data);
         dispatch({type: "LOGIN", payload: user.data});
         navigate('/');
     } catch (e) {

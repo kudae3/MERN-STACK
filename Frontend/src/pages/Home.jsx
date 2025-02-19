@@ -21,7 +21,7 @@ function Home() {
   useEffect(() => {
     let fetchRecipes = async() => {
       try {
-        let res = await api.get('/recipes?page='+currentPage);      
+        let res = await api.get('api/recipes?page='+currentPage);      
         setRecipes(res.data.recipes);
         setTotalPages(res.data.totalPages);
       } catch (e) { 
@@ -33,7 +33,7 @@ function Home() {
 
   const deleteRecipe = async(id) => {
     if(!window.confirm('Are you sure you want to delete this recipe?')) return;
-    await api.delete('/recipes/'+id);
+    await api.delete('api/recipes/'+id);
     
     if(recipes.length === 1 && currentPage > 1){
       navigate('/?page='+(currentPage-1));

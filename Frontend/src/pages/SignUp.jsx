@@ -27,7 +27,7 @@ function SignUp() {
         return;
       }
       let data = {name: username, email, password}
-      let user = await api.post('/users/register', data);
+      let user = await api.post('api/users/register', data);
       dispatch({type: "LOGIN", payload: user.data});
       navigate('/');
       

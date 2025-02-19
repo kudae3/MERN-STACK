@@ -1,6 +1,5 @@
 import { Link } from "react-router";
 import dayjs from "dayjs";
-import Boy from '../assets/Boy.jpg'
 
 function RecipeCard({ recipe, deleteRecipe }) {
   return (
@@ -12,7 +11,7 @@ function RecipeCard({ recipe, deleteRecipe }) {
           </time>
           
           <div>
-            <img className="rounded-lg border my-3 size-32" src={Boy} alt="" />
+            <img className="rounded-lg border my-3 size-32" src={import.meta.env.VITE_API_URL+recipe.photo} alt="" />
           </div>
           
           <h3 className="mt-0.5 text-lg font-medium text-gray-900">

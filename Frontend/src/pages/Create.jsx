@@ -23,7 +23,7 @@ function Create() {
     useEffect(() => {
         if(id){
             let fetchRecipe = async() => {
-                let res = await api.get('/recipes/'+id);
+                let res = await api.get('api/recipes/'+id);
                 setTitle(res.data.title);
                 setDescription(res.data.description);
                 setIngredients(res.data.ingredients);
@@ -57,10 +57,10 @@ function Create() {
             let recipeId;
             let res
             if(id){
-                res = await api.patch('/recipes/'+id, recipe)                
+                res = await api.patch('api/recipes/'+id, recipe)                
             }
             else{
-                res = await api.post('/recipes', recipe)
+                res = await api.post('api/recipes', recipe)
             }
             recipeId = res.data._id;
             
@@ -69,7 +69,7 @@ function Create() {
             let formData = new FormData;
             formData.set('photo', file[0]);
 
-            await api.post(`/recipes/${recipeId}/upload`, formData, {
+            await api.post(`api/recipes/${recipeId}/upload`, formData, {
                 headers: {
                     Accept: 'multipart/form-data'
                 }

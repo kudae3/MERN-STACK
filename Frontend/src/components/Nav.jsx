@@ -11,7 +11,7 @@ function Nav() {
   
   const logout = async() => {
     try {
-      await api.post('/users/logout');
+      await api.post('api/users/logout');
       navigate('/login');
       dispatch({type: "LOGOUT", payload: null});
     } catch (error) {
