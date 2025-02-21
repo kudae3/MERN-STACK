@@ -1,15 +1,17 @@
 import { NavLink, useNavigate } from "react-router"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { AuthContext } from "../contexts/AuthContext";
 import api from "../../axios.config";
+import Modal from "./Modal";
 
 function Nav() {
   
   let {user, dispatch} = useContext(AuthContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   let navigate = useNavigate();
   
-  const logout = async() => {
+  const handleLogout = async() => {
     try {
       await api.post('api/users/logout');
       navigate('/login');
@@ -20,7 +22,7 @@ function Nav() {
   }
   
   return (
-    <div className="bg-gray-700">
+  <div className="bg-gray-700">
     <nav className="flex justify-between items-center p-5 text-white md:max-w-xl lg:max-w-5xl mx-auto">
       <div>
         <h1 className="font-bold text-2xl lg:text-3xl text-orange-400 tracking-wider">
@@ -72,13 +74,23 @@ function Nav() {
                   <p className="text-teal-400 font-semibold">{user && user.user.name}</p>
               </li>
               <li>
-                <button onClick={logout} className="text-teal-400 font-semibold">Logout</button>
+                <button onClick={()=>setIsModalOpen(true)} className="text-teal-400 font-semibold">Logout</button>
               </li>
             </>
           )
         }
       </ul>
     </nav>
+    <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={() => {
+          handleLogout();
+          setIsModalOpen(false);
+        }}
+        title="Confirm Logout"
+        message="Are you sure you want to log out?"
+      />
   </div>
   )
 }

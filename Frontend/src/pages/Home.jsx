@@ -32,7 +32,6 @@ function Home() {
   }, [currentPage])
 
   const deleteRecipe = async(id) => {
-    if(!window.confirm('Are you sure you want to delete this recipe?')) return;
     await api.delete('api/recipes/'+id);
     
     if(recipes.length === 1 && currentPage > 1){

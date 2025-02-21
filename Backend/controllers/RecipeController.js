@@ -32,7 +32,8 @@ const RecipeController = {
                 view: 'mail',
                 data: {name: authuser.name, recipe: req.body.title},
                 from: authuser.email,
-                to: users
+                to: users,
+                subject: 'New Recipe Is Created By Someone'
             });
             
             let {title, description, ingredients} = req.body;        
