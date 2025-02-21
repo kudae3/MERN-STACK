@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../../axios.config";
 import { useNavigate, useParams } from "react-router";
 import DropZone from "../components/DropZone";
-
+import 'ldrs/bouncy'
+import LoadingBtn from "../components/ui/LoadingBtn";
 function Create() {
 
     let navigate = useNavigate();
@@ -17,6 +18,8 @@ function Create() {
     const [duplicateError, setDuplicateError] = useState(false);
     
     const [errors, setErrors] = useState([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [clickable, setClickable] = useState(true);
 
     const [file, setFile] = useState([]);
 
@@ -51,6 +54,8 @@ function Create() {
     const handleSubmit = async(e) => {
         try {
             e.preventDefault();
+            setIsSubmitting(true);
+            setClickable(false);
 
             let recipe = {title, description, ingredients}
             
@@ -78,7 +83,9 @@ function Create() {
             }
 
             navigate('/');
-        } catch (e) {           
+        } catch (e) {      
+            setIsSubmitting(false);   
+            setClickable(true);  
             setErrors(e.response.data.errors);             
         }
     }
@@ -89,7 +96,7 @@ function Create() {
             <form className="space-y-7" onSubmit={(e)=>handleSubmit(e)}>
                 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Title</label>
+                    <label className="block text-sm font-medium text-gray-700">Title</label> 
                     <input 
                         value={title}
                         onChange={(e)=>{
@@ -172,9 +179,18 @@ function Create() {
                 </div>
 
                 <div>
-                    <button type="submit" className="bg-green-500 hover:bg-green-600 duration-300 text-white px-4 py-2 rounded-md">
-                        {id ? 'Update' : 'Create'}
-                    </button>
+                    {
+                        isSubmitting ? 
+                        (<button disabled={!clickable} type="submit" className={`${!clickable ? 'opacity-70 cursor-not-allowed' : ''} bg-green-500 hover:bg-green-600 duration-300 text-white px-4 py-2 rounded-md`}>
+                             <span className="pe-1 font-medium">{id ? 'Updating' : 'Creating'} </span>  
+                             <LoadingBtn/>       
+                        </button>) : 
+                        (
+                        <button type="submit" className="bg-green-500 hover:bg-green-600 duration-300 text-white px-4 py-2 rounded-md">
+                            <span className="font-medium">{id ? 'Update' : 'Create'} </span>        
+                        </button>
+                        )
+                    }
                 </div>
             
             </form>

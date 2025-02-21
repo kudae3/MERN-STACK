@@ -23,7 +23,11 @@ function Nav() {
     <div className="bg-gray-700">
     <nav className="flex justify-between items-center p-5 text-white md:max-w-xl lg:max-w-5xl mx-auto">
       <div>
-        <h1 className="font-bold text-2xl lg:text-3xl text-orange-400 tracking-wider">Recipefy</h1>
+        <h1 className="font-bold text-2xl lg:text-3xl text-orange-400 tracking-wider">
+          <NavLink to="/">
+            Recipefy
+          </NavLink>
+        </h1>
       </div>
       <ul className="flex space-x-5">
         <li>
@@ -55,7 +59,7 @@ function Nav() {
           
         }
         {
-          user && (
+          !!user && (
             <>
               <li>
                 <NavLink 
@@ -65,11 +69,7 @@ function Nav() {
                 </NavLink>
               </li>
               <li>
-                <NavLink 
-                  to="/profile" 
-                  className={({isActive}) => isActive ? 'text-teal-400 font-semibold underline decoration-orange-500 decoration-2 underline-offset-8': 'text-teal-400 font-semibold'} >
-                  {user && user.user.name}
-                </NavLink>
+                  <p className="text-teal-400 font-semibold">{user && user.user.name}</p>
               </li>
               <li>
                 <button onClick={logout} className="text-teal-400 font-semibold">Logout</button>
