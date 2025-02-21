@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser'; 
 import AuthMiddleware from './middlewares/AuthMiddleware.js';
+import nodemailer from 'nodemailer';
 
 const app = express();
 mongoose.connect(process.env.MONGO_URI).then(()=>{
@@ -26,3 +27,30 @@ app.use(cookieParser());
 
 app.use('/api/recipes', AuthMiddleware, RecipeRoutes);
 app.use('/api/users', UserRoutes);
+
+app.get('/send-email', async(req, res) => {
+    
+        // Looking to send emails in production? Check out our Email API/SMTP product!
+        var transport = nodemailer.createTransport({
+            host: "sandbox.smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+            user: "60e7e653a90fba",
+            pass: "dff22aa9d32b79"
+            }
+        });
+
+        // send mail with defined transport object
+        const info = await transport.sendMail({
+            from: 'kduaesithu2@gmail.com', // sender address
+            to: "bar@example.com, baz@example.com", // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Hello world?", // plain text body
+            html: "<b>Hello world?</b>", // html body
+        });
+
+        console.log("Message sent: %s", info.messageId);
+
+        return res.json({message: 'Email sent!'});
+
+})
