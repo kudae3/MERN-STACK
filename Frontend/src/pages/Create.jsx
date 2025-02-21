@@ -66,14 +66,16 @@ function Create() {
             
 
             //file
-            let formData = new FormData;
-            formData.set('photo', file[0]);
-
-            await api.post(`api/recipes/${recipeId}/upload`, formData, {
-                headers: {
-                    Accept: 'multipart/form-data'
-                }
-            })
+            if(file.length > 0){
+                let formData = new FormData;
+                formData.set('photo', file[0]);
+    
+                await api.post(`api/recipes/${recipeId}/upload`, formData, {
+                    headers: {
+                        Accept: 'multipart/form-data'
+                    }
+                })
+            }
 
             navigate('/');
         } catch (e) {           

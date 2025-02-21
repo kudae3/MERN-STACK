@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import { promises as fs } from 'fs';
+import sendEmail from "../functions/sendEmail.js";
+import User from "../models/User.js";
 
 const RecipeController = {
     index: async (req, res) => {
@@ -18,12 +20,30 @@ const RecipeController = {
     },
 
     store: async(req, res) => {
-        let {title, description, ingredients} = req.body;        
-        const recipe = await Recipe.create({
-            title, description, ingredients
-        })
-        return res.status(200).json(recipe);
+        try {
 
+            const authuser = await User.findById(req.user.id);
+
+            let users = await User.find();
+            users = users.map(user => user.email);
+            users = users.filter(user => user !== authuser.email);
+
+            await sendEmail({
+                view: 'mail',
+                data: {name: authuser.name, recipe: req.body.title},
+                from: authuser.email,
+                to: users
+            });
+            
+            let {title, description, ingredients} = req.body;        
+            const recipe = await Recipe.create({
+                title, description, ingredients
+            })
+
+            return res.status(200).json(recipe);
+        } catch (error) {
+            return res.status(500).json({message: 'Internal Server Error'} || error.message);
+        }
     },
 
     show: async (req, res) => {

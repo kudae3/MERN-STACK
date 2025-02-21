@@ -37,16 +37,16 @@ app.set('view engine', 'ejs');
 app.use('/api/recipes', AuthMiddleware, RecipeRoutes);
 app.use('/api/users', UserRoutes);
 
-app.get('/send-email', (req, res) => {
+app.get('/send-email', async(req, res) => {
     try {
-        sendEmail({
-            view: 'welcomeMail',
+        await sendEmail({
+            view: 'mail',
             data: {name: 'Kudae'},
             from: 'react@gmail.com',
             to: 'kduaesithu2@gmail.com'
         })
         return res.status(200).send('Email sent');
-    } catch (error) {
-        return res.status(500).send('Error sending email');
+    } catch (e) {
+        return res.status(500).send(e.message);
     }
 })

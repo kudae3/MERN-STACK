@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 
-const sendEmail = ({view, data, from, to, subject})  => {
+const sendEmail = async({view, data, from, to, subject})  => {
+    try {
         // Looking to send emails in production? Check out our Email API/SMTP product!
         var transport = nodemailer.createTransport({
             host: "sandbox.smtp.mailtrap.io",
@@ -12,20 +13,16 @@ const sendEmail = ({view, data, from, to, subject})  => {
             }
         });
 
-        ejs.renderFile(`./views/${view}.ejs`, data, async(err, html) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send('Error rendering template');
-            }
-            // send mail with defined transport object
-            await transport.sendMail({
-                from, 
-                to, 
-                subject, 
-                html, 
-            });
+        let html =  await ejs.renderFile(`./views/${view}.ejs`, data);
+        await transport.sendMail({
+            from, 
+            to, 
+            subject, 
+            html, 
         });
-
+    } catch (e) {
+        throw new Error(e);
+    }
 }
 
 export default sendEmail;
