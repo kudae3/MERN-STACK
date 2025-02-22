@@ -60,7 +60,7 @@ function RecipeCard({ recipe, deleteRecipe }) {
               </span>
             </Link>
             
-            <Link
+            <button
               onClick={() => setIsModalOpen(true)}
               className="group relative inline-flex items-center overflow-hidden rounded-lg border border-current px-2 py-1 text-red-600 focus:ring-3 focus:outline-hidden"
             >
@@ -72,7 +72,7 @@ function RecipeCard({ recipe, deleteRecipe }) {
               <span className="text-sm font-medium transition-all group-hover:me-4">
                 Delete
               </span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>

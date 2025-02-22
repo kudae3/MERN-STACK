@@ -16,6 +16,7 @@ function Create() {
     
     const [invalidInput, setInvalidInput] = useState(false);
     const [duplicateError, setDuplicateError] = useState(false);
+    const [prevPhoto, setPrevPhoto] = useState('');
     
     const [errors, setErrors] = useState([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +31,7 @@ function Create() {
                 setTitle(res.data.title);
                 setDescription(res.data.description);
                 setIngredients(res.data.ingredients);
+                setPrevPhoto(res.data.photo);
             }
             fetchRecipe();
         }
@@ -62,7 +64,7 @@ function Create() {
             let recipeId;
             let res
             if(id){
-                res = await api.patch('api/recipes/'+id, recipe)                
+                res = await api.patch('api/recipes/'+id, recipe)                                
             }
             else{
                 res = await api.post('api/recipes', recipe)
@@ -93,7 +95,17 @@ function Create() {
     return (
         <div className="border border-gray-200 p-8 rounded-md shadow-md container mx-auto max-w-md">
             <h2 className="text-teal-500 font-bold text-center text-2xl mb-7">{id ? 'Edit the' : 'Create a new'} Recipe</h2>
+            
+            
             <form className="space-y-7" onSubmit={(e)=>handleSubmit(e)}>
+
+                <div>
+                    {
+                        prevPhoto && (
+                            <div className="flex justify-center items-center"><img className="size-48 object-cover my-2 rounded-lg" src={import.meta.env.VITE_API_URL+prevPhoto} alt="" /></div>
+                        )
+                    }
+                </div>
                 
                 <div>
                     <label className="block text-sm font-medium text-gray-700">Title</label> 

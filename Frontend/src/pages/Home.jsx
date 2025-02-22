@@ -33,6 +33,10 @@ function Home() {
 
   const deleteRecipe = async(id) => {
     await api.delete('api/recipes/'+id);
+
+    let res = await api.get('api/recipes?page='+currentPage);      
+    setRecipes(res.data.recipes);
+    setTotalPages(res.data.totalPages);
     
     if(recipes.length === 1 && currentPage > 1){
       navigate('/?page='+(currentPage-1));
