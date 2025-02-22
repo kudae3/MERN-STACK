@@ -5,6 +5,15 @@ import { dirname } from "path";
 import { promises as fs } from 'fs';
 import sendEmail from "../functions/sendEmail.js";
 import User from "../models/User.js";
+import Queue from 'bull';
+
+const emailQueue = new Queue('email processing', { 
+    redis: { port: 6379, host: '127.0.0.1'} 
+}); 
+
+emailQueue.process(async(job)=>{
+    await sendEmail(job.data);
+})
 
 const RecipeController = {
     index: async (req, res) => {
@@ -28,13 +37,13 @@ const RecipeController = {
             users = users.map(user => user.email);
             users = users.filter(user => user !== authuser.email);
 
-            await sendEmail({
+            emailQueue.add({
                 view: 'mail',
                 data: {name: authuser.name, recipe: req.body.title},
                 from: authuser.email,
                 to: users,
                 subject: 'New Recipe Is Created By Someone'
-            });
+            })
             
             let {title, description, ingredients} = req.body;        
             const recipe = await Recipe.create({
