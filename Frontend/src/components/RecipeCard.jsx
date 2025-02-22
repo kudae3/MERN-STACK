@@ -29,8 +29,7 @@ function RecipeCard({ recipe, deleteRecipe }) {
             <h3 className="mt-0.5 text-lg font-medium text-gray-900">
               {recipe.title}
             </h3>
-            <p className="mt-0.5 font-normal text-gray-900">
-              {recipe.description}
+            <p className="mt-0.5 font-normal text-gray-900"  dangerouslySetInnerHTML={{ __html: recipe.description }}>
             </p>
             <div className="mt-4 flex flex-wrap gap-1">
               {recipe.ingredients.map((ingredient, index) => (

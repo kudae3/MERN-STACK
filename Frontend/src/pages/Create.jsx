@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import DropZone from "../components/DropZone";
 import 'ldrs/bouncy'
 import LoadingBtn from "../components/ui/LoadingBtn";
+import Editor from '../components/Editor';
 function Create() {
 
     let navigate = useNavigate();
@@ -130,20 +131,16 @@ function Create() {
                 </div>
                 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Description</label>
-                    <textarea 
-                        value={description}
-                        onChange={(e) => {
-                            setDescription(e.target.value)
-                        }}
-                        className="mt-1 block w-full border rounded-md shadow-sm p-2 focus-within:outline-[0.5px] focus-within:outline-teal-400">
-                    </textarea>
-                    <div>
-                        {
-                            (errors && errors.description )&&
-                            <p className="text-red-600 text-xs font-semibold">{errors.description.msg}</p>
-                        }
-                    </div>
+                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <Editor 
+                    onChange={(value) => setDescription(value)}
+                    value={description} // Optional: for controlled input
+                />
+                <div>
+                    {(errors?.description) && (
+                    <p className="text-red-600 text-xs font-semibold">{errors.description.msg}</p>
+                    )}
+                </div>
                 </div>
                 
                 <div>

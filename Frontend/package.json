@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^9.5.0",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "ldrs": "^1.0.2",
